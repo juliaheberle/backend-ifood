@@ -1,14 +1,15 @@
 package br.com.restaurante.ifood.model;
 
+import br.com.restaurante.ifood.controller.dto.EnderecoDto;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Data
+@NoArgsConstructor
+@Table(name = "endereco")
 public class Endereco {
 
     @Id
@@ -19,4 +20,14 @@ public class Endereco {
     private String rua;
     private Long numero;
     private Long cep;
+
+    public Endereco(EnderecoDto enderecoDto) {
+        this.id = enderecoDto.getId();
+        this.estado = enderecoDto.getEstado();
+        this.cidade = enderecoDto.getCidade();
+        this.rua = enderecoDto.getRua();
+        this.numero = enderecoDto.getNumero();
+        this.cep = enderecoDto.getCep();
+    }
+
 }
