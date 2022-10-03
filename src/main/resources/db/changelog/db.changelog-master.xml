@@ -9,7 +9,10 @@
 		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
 		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
 
-<!--    <include file="./scripts/001_create_table_person.sql" relativeToChangelogFile="true"/>-->
-<!--    <include file="./scripts/002_alter_table_person.sql" relativeToChangelogFile="true"/>-->
+    <include file="./scripts/001_create_table_endereco.sql" relativeToChangelogFile="true"/>
+    <include file="./scripts/002_create_table_cliente.sql" relativeToChangelogFile="true"/>
+    <include file="./scripts/003_create_table_restaurante.sql" relativeToChangelogFile="true"/>
+    <include file="./scripts/004_create_table_prato.sql" relativeToChangelogFile="true"/>
+    <include file="./scripts/005_create_table_pedido.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
