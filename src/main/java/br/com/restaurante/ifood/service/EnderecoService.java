@@ -1,6 +1,7 @@
 package br.com.restaurante.ifood.service;
 
 import br.com.restaurante.ifood.controller.dto.EnderecoDto;
+import br.com.restaurante.ifood.exception.NotFoundException;
 import br.com.restaurante.ifood.model.Endereco;
 import br.com.restaurante.ifood.repository.EnderecoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,17 @@ public class EnderecoService {
     }
 
     public EnderecoDto getById(Long id) {
-        Endereco endereco = enderecoRepository.findById(id).get();
+        Endereco endereco = enderecoRepository.findById(id).orElseThrow(() ->
+                new NotFoundException("Endereco nao existe!"));
         return new EnderecoDto(endereco);
     }
 
     public void deleteById(Long id) {
-        enderecoRepository.deleteById(id);
+        try {
+            enderecoRepository.deleteById(id);
+        }catch (Exception exception){
+            new NotFoundException("Endereco ja deletado");
+        }
     }
 
     public List<EnderecoDto> getAll() {
