@@ -1,5 +1,6 @@
 package br.com.restaurante.ifood.handler;
 
+import br.com.restaurante.ifood.exception.BadRequestException;
 import br.com.restaurante.ifood.exception.ExceptionsDetails;
 import br.com.restaurante.ifood.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
@@ -20,5 +21,15 @@ public class MyExceptionHandler {
                 .message(ex.getMessage())
                 .statusHttp(HttpStatus.NOT_FOUND.value())
                 .build(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ExceptionsDetails> badRequestexception(BadRequestException ex){
+        return new ResponseEntity<>(ExceptionsDetails.builder()
+                .dateTime(LocalDateTime.now())
+                .erro("Not Found")
+                .message(ex.getMessage())
+                .statusHttp(HttpStatus.BAD_REQUEST.value())
+                .build(), HttpStatus.BAD_REQUEST);
     }
 }

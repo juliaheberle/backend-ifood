@@ -1,6 +1,7 @@
 package br.com.restaurante.ifood.model;
 
 import br.com.restaurante.ifood.controller.dto.EnderecoDto;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "endereco")
 public class Endereco {
 
