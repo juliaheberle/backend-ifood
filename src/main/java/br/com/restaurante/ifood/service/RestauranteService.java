@@ -1,5 +1,6 @@
 package br.com.restaurante.ifood.service;
 
+import br.com.restaurante.ifood.controller.dto.PratoDto;
 import br.com.restaurante.ifood.controller.dto.RestauranteDto;
 import br.com.restaurante.ifood.exception.BadRequestException;
 import br.com.restaurante.ifood.exception.NotFoundException;
@@ -21,11 +22,12 @@ public class RestauranteService {
     private RestauranteRepository restauranteRepository;
 
     public RestauranteDto save(RestauranteDto restauranteDto) {
-        List<Prato> pratos = restauranteDto.getPratos().stream().map(it -> {
-            return new Prato(it);
-        }).collect(Collectors.toList());
+        List<Prato> pratos = restauranteDto.getPratos()
+                .stream()
+                .map(Prato::new)
+                .collect(Collectors.toList());
         Restaurante restaurante = restauranteRepository.save(new Restaurante(restauranteDto, pratos));
-         return new RestauranteDto(restaurante);
+        return new RestauranteDto(restaurante);
     }
 
     public RestauranteDto findById(Long id) {
@@ -48,7 +50,8 @@ public class RestauranteService {
         RestauranteDto restaurante = findById(id);
         changes.forEach((atributo, valor) -> {
             switch (atributo) {
-                case "nome" : restaurante.setNome(valor);
+                case "nome":
+                    restaurante.setNome(valor);
             }
         });
 
@@ -57,10 +60,15 @@ public class RestauranteService {
 
     public RestauranteDto update(RestauranteDto restauranteDto) {
         Optional<Restaurante> byId = restauranteRepository.findById(restauranteDto.getId());
-        if (byId.isPresent()){
+        if (byId.isPresent()) {
             return save(restauranteDto);
         }
         throw new BadRequestException("Para inserir um novo registro usar metodo post");
 
+    }
+
+    public List<PratoDto> findAllPratos(Long id) {
+        RestauranteDto restauranteDto = findById(id);
+        return restauranteDto.getPratos();
     }
 }

@@ -28,7 +28,7 @@ public class PratoDto {
         this.preco = prato.getPreco();
     }
 
-    public static List<PratoDto> converter(List<Prato> pratos) {
+    public static List<PratoDto> converterList(List<Prato> pratos) {
         return pratos.stream().map(PratoDto::new).collect(Collectors.toList());
     }
 }

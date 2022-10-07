@@ -1,11 +1,14 @@
 package br.com.restaurante.ifood.model;
 
 import br.com.restaurante.ifood.controller.dto.EnderecoDto;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -23,6 +26,17 @@ public class Endereco {
     private Long numero;
     private Long cep;
 
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "cliente_id")
+    @JsonIgnoreProperties("endereco")
+    private Cliente cliente;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "restaurante_id")
+    @JsonIgnoreProperties("restaurante")
+    private Restaurante restaurante;
+
+
     public Endereco(EnderecoDto enderecoDto) {
         this.id = enderecoDto.getId();
         this.estado = enderecoDto.getEstado();
@@ -32,4 +46,7 @@ public class Endereco {
         this.cep = enderecoDto.getCep();
     }
 
+    public static List<Endereco> converter(List<EnderecoDto> endereco) {
+        return endereco.stream().map(Endereco::new).collect(Collectors.toList());
+    }
 }

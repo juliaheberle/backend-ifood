@@ -1,6 +1,7 @@
 package br.com.restaurante.ifood.model;
 
 import br.com.restaurante.ifood.controller.dto.PratoDto;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,13 +13,15 @@ import javax.persistence.*;
 public class Prato {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String titulo;
     private String descricao;
     @Enumerated(EnumType.STRING)
     private TipoComida tipoComida;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "restaurante_id")
+    @JsonIgnoreProperties("pratos")
     private Restaurante restaurante;
     private Double preco;
 
