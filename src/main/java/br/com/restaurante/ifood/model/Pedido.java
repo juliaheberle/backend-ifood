@@ -20,15 +20,16 @@ public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "cliente_id")
     @JsonIgnoreProperties("pedidos")
     private Cliente cliente;
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "pedido_id")
+    @JsonIgnoreProperties("pedido")
     private List<Prato> pratos;
-    private BigDecimal valorTotal;
-    @OneToOne(cascade = CascadeType.PERSIST)
+    private Double valorTotal;
+    @OneToOne(cascade = CascadeType.MERGE)
     private Endereco enderecoEntrega;
     private LocalDate prazoEntrega;
     private String auditoria;

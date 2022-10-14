@@ -4,6 +4,8 @@ import br.com.restaurante.ifood.model.Cliente;
 import br.com.restaurante.ifood.model.Endereco;
 import br.com.restaurante.ifood.model.Pedido;
 import br.com.restaurante.ifood.model.Prato;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,13 +14,15 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class PedidoDto {
 
     private Long id;
     private Cliente cliente;
     private List<Prato> pratos;
-    private BigDecimal valorTotal;
+    private Double valorTotal;
     private Endereco enderecoEntrega;
     private LocalDate prazoEntrega;
     private String auditoria;
@@ -33,13 +37,5 @@ public class PedidoDto {
         this.auditoria = pedido.getAuditoria();
     }
 
-    public BigDecimal getValorTotalPedido(){
-        Double precoTotal = .0;
 
-        for(Prato item: pratos){
-            precoTotal += item.getPreco();
-        }
-
-        return new BigDecimal(precoTotal);
-    }
 }

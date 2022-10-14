@@ -23,8 +23,8 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.post(clienteDto));
     }
 
-    @PostMapping("/pedidos/{clienteId}")
-    private ResponseEntity<List<PedidoDto>> casdastrarPedido(@PathVariable Long clienteId, @RequestBody List<PedidoDto> pedidoDto){
+    @PostMapping("/{clienteId}/pedidos")
+    private ResponseEntity<PedidoDto> casdastrarPedido(@PathVariable Long clienteId, @RequestBody List<PedidoDto> pedidoDto){
         return ResponseEntity.ok(clienteService.postPedido(clienteId, pedidoDto));
     }
 

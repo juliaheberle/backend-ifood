@@ -10,6 +10,7 @@ import br.com.restaurante.ifood.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -21,12 +22,15 @@ public class RestauranteService {
     @Autowired
     private RestauranteRepository restauranteRepository;
 
+    @Autowired
+    private PratoService pratoService;
+
     public RestauranteDto save(RestauranteDto restauranteDto) {
-        List<Prato> pratos = restauranteDto.getPratos()
-                .stream()
-                .map(Prato::new)
-                .collect(Collectors.toList());
-        Restaurante restaurante = restauranteRepository.save(new Restaurante(restauranteDto, pratos));
+//        List<Prato> pratos = restauranteDto.getPratos()
+//                .stream()
+//                .map(Prato::new)
+//                .collect(Collectors.toList());
+        Restaurante restaurante = restauranteRepository.save(new Restaurante(restauranteDto));
         return new RestauranteDto(restaurante);
     }
 
@@ -69,6 +73,17 @@ public class RestauranteService {
 
     public List<PratoDto> findAllPratos(Long id) {
         RestauranteDto restauranteDto = findById(id);
-        return restauranteDto.getPratos();
+        return PratoDto.converterList(restauranteDto.getPratos());
+    }
+
+    public PratoDto postPratos(Long restauranteId, PratoDto pratoDto) {
+        RestauranteDto restauranteDto = findById(restauranteId);
+        ArrayList<PratoDto> pratos = new ArrayList<>();
+        pratos.add(pratoDto);
+        restauranteDto.setPratos(Prato.converterList(pratos));
+        pratoDto.setRestaurante(new Restaurante(restauranteDto));
+
+        return pratoService.post(pratoDto);
+
     }
 }

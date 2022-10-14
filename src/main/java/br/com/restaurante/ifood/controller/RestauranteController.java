@@ -23,6 +23,11 @@ public class RestauranteController {
         return ResponseEntity.status(HttpStatus.CREATED).body(restauranteService.save(restauranteDto));
     }
 
+    @PostMapping("{restauranteId}/prato")
+    public ResponseEntity<PratoDto> postPrato(@PathVariable Long restauranteId, @RequestBody PratoDto pratoDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(restauranteService.postPratos(restauranteId, pratoDto));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<RestauranteDto> getBy(@PathVariable Long id) {
         return ResponseEntity.ok(restauranteService.findById(id));

@@ -23,12 +23,12 @@ public class Restaurante {
     private List<Endereco> endereco;
     private String nome;
     private Long cnpj;
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.MERGE)
     @JoinColumn(name = "restaurante_id")
     @JsonIgnoreProperties("restaurante")
     private List<Prato> pratos;
 
-    public Restaurante(RestauranteDto restauranteDto, List<Prato> pratos) {
+    public Restaurante(RestauranteDto restauranteDto) {
         this.id = restauranteDto.getId();
         this.endereco = restauranteDto.getEndereco();
         this.nome = restauranteDto.getNome();

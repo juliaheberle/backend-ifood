@@ -33,7 +33,7 @@ public class Endereco {
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "restaurante_id")
-    @JsonIgnoreProperties("restaurante")
+    @JsonIgnoreProperties("endereco")
     private Restaurante restaurante;
 
 

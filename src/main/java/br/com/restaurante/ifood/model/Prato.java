@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -19,7 +21,7 @@ public class Prato {
     private String descricao;
     @Enumerated(EnumType.STRING)
     private TipoComida tipoComida;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "restaurante_id")
     @JsonIgnoreProperties("pratos")
     private Restaurante restaurante;
@@ -32,5 +34,9 @@ public class Prato {
         this.tipoComida = pratoDto.getTipoComida();
         this.restaurante = pratoDto.getRestaurante();
         this.preco = pratoDto.getPreco();
+    }
+
+    public static List<Prato> converterList(List<PratoDto> pratos) {
+        return pratos.stream().map(Prato::new).collect(Collectors.toList());
     }
 }

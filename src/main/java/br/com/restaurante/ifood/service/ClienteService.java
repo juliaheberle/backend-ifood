@@ -2,15 +2,20 @@ package br.com.restaurante.ifood.service;
 
 import br.com.restaurante.ifood.controller.dto.ClienteDto;
 import br.com.restaurante.ifood.controller.dto.PedidoDto;
+import br.com.restaurante.ifood.controller.dto.PratoDto;
 import br.com.restaurante.ifood.exception.BadRequestException;
 import br.com.restaurante.ifood.model.Cliente;
 import br.com.restaurante.ifood.model.Pedido;
+import br.com.restaurante.ifood.model.Prato;
 import br.com.restaurante.ifood.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ClienteService {
@@ -18,11 +23,17 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
+    @Autowired
+    private PratoService pratoService;
+
+    @Autowired
+    private PedidoService pedidoService;
+
     public ClienteDto post(ClienteDto clienteDto) {
-        if (clienteDto.getId() == null){
+        if (clienteDto.getId() == null) {
             Cliente cliente = clienteRepository.save(new Cliente(clienteDto));
             return new ClienteDto(cliente);
-        }else {
+        } else {
             throw new BadRequestException("Cliente ja cadastrado, para alterar registos use update");
         }
     }
@@ -45,13 +56,33 @@ public class ClienteService {
         return post(clienteDto);
     }
 
-    public List<PedidoDto> postPedido(Long clienteId, List<PedidoDto> pedidoDto) {
+    public PedidoDto postPedido(Long clienteId, List<PedidoDto> pedidoDto) {
         ClienteDto clienteDto = getBy(clienteId);
         clienteDto.setPedidos(Pedido.converter(pedidoDto));
-        pedidoDto.forEach(item -> {
-            BigDecimal valorTotal = item.getValorTotalPedido();
-            item.setValorTotal(valorTotal);
+        Double valor = .0;
+        for (int i = 0; i < pedidoDto.size(); i++) {
+            for (int j = 0; j < pedidoDto.get(i).getPratos().size(); j++) {
+                PratoDto pratoDto = pratoService.getBy(pedidoDto.get(i).getPratos().get(i).getId());
+                valor += pratoDto.getPreco();
+                pedidoDto.get(i).setValorTotal(valor);
+            }
+        }
+
+        ArrayList<Prato> listPrato = new ArrayList<>();
+        pedidoDto.get(0).getPratos().forEach(item -> {
+            Long pratoId = item.getId();
+            PratoDto pratoDto = pratoService.getBy(pratoId);
+            Prato prato = new Prato(pratoDto);
+            listPrato.add(prato);
         });
-        return pedidoDto;
+
+        return pedidoService.post(
+                PedidoDto.builder()
+                        .cliente(new Cliente(clienteDto))
+                        .prazoEntrega(LocalDate.now())
+                        .pratos(listPrato)
+                        .valorTotal(pedidoDto.get(0).getValorTotal())
+//                        .enderecoEntrega(clienteDto.getEndereco().get(0))
+                        .build());
     }
 }
