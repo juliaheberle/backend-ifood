@@ -1,14 +1,21 @@
 package br.com.restaurante.ifood.model;
 
+import br.com.restaurante.ifood.controller.dto.ClienteDto;
 import br.com.restaurante.ifood.controller.dto.EnderecoDto;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "endereco")
 public class Endereco {
 
@@ -20,6 +27,16 @@ public class Endereco {
     private String rua;
     private Long numero;
     private Long cep;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "cliente_id")
+    @JsonIgnoreProperties("endereco")
+    private Cliente cliente;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "restaurante_id")
+    @JsonIgnoreProperties("endereco")
+    private Restaurante restaurante;
+
 
     public Endereco(EnderecoDto enderecoDto) {
         this.id = enderecoDto.getId();
@@ -28,6 +45,11 @@ public class Endereco {
         this.rua = enderecoDto.getRua();
         this.numero = enderecoDto.getNumero();
         this.cep = enderecoDto.getCep();
+        this.cliente = enderecoDto.getCliente();
+        this.restaurante = enderecoDto.getRestaurante();
     }
 
+    public static List<Endereco> converter(List<EnderecoDto> endereco) {
+        return endereco.stream().map(Endereco::new).collect(Collectors.toList());
+    }
 }
