@@ -4,7 +4,9 @@ import br.com.restaurante.ifood.controller.dto.ClienteDto;
 import br.com.restaurante.ifood.controller.dto.EnderecoDto;
 import br.com.restaurante.ifood.controller.dto.RestauranteDto;
 import br.com.restaurante.ifood.exception.NotFoundException;
+import br.com.restaurante.ifood.model.Cliente;
 import br.com.restaurante.ifood.model.Endereco;
+import br.com.restaurante.ifood.model.Restaurante;
 import br.com.restaurante.ifood.repository.EnderecoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,23 +20,10 @@ public class EnderecoService {
     @Autowired
     private EnderecoRepository enderecoRepository;
 
-    @Autowired
-    private ClienteService clienteService;
 
-    @Autowired
-    private RestauranteService restauranteService;
-
-    public ClienteDto saveCliente(List<EnderecoDto> enderecoDto, Long id) {
-        ClienteDto clienteDto = clienteService.getBy(id);
-        clienteDto.setEndereco(Endereco.converter(enderecoDto));
-        return clienteDto;
-    }
-
-    public RestauranteDto saveRestaurante(List<EnderecoDto> enderecoDto, Long id) {
-        RestauranteDto restauranteDto = restauranteService.findById(id);
-//        Endereco endereco = new Endereco(enderecoDto);
-        restauranteDto.setEndereco(Endereco.converter(enderecoDto));
-        return restauranteDto;
+    public EnderecoDto post(EnderecoDto enderecoDto){
+        Endereco endereco = enderecoRepository.save(new Endereco(enderecoDto));
+        return new EnderecoDto(endereco);
     }
 
     public EnderecoDto getById(Long id) {
@@ -57,7 +46,6 @@ public class EnderecoService {
                 .map(EnderecoDto::new)
                 .collect(Collectors.toList());
     }
-
 
 //    public EnderecoDto uptadePartial(Long id, Map<String, String> changes) {
 //        EnderecoDto endereco = getById(id);

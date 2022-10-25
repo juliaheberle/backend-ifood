@@ -1,5 +1,6 @@
 package br.com.restaurante.ifood.controller;
 
+import br.com.restaurante.ifood.controller.dto.EnderecoDto;
 import br.com.restaurante.ifood.controller.dto.PratoDto;
 import br.com.restaurante.ifood.controller.dto.RestauranteDto;
 import br.com.restaurante.ifood.service.RestauranteService;
@@ -24,8 +25,13 @@ public class RestauranteController {
     }
 
     @PostMapping("{restauranteId}/prato")
-    public ResponseEntity<PratoDto> postPrato(@PathVariable Long restauranteId, @RequestBody PratoDto pratoDto) {
+    public ResponseEntity<PratoDto> cadastrarPrato(@PathVariable Long restauranteId, @RequestBody PratoDto pratoDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(restauranteService.postPratos(restauranteId, pratoDto));
+    }
+
+    @PostMapping("{restauranteId}/endereco")
+    public ResponseEntity<EnderecoDto> cadastrarEndereco(@PathVariable Long restauranteId, @RequestBody EnderecoDto enderecoDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(restauranteService.postEndereco(restauranteId, enderecoDto));
     }
 
     @GetMapping("/{id}")

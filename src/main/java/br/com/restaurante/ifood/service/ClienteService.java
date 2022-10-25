@@ -1,10 +1,12 @@
 package br.com.restaurante.ifood.service;
 
 import br.com.restaurante.ifood.controller.dto.ClienteDto;
+import br.com.restaurante.ifood.controller.dto.EnderecoDto;
 import br.com.restaurante.ifood.controller.dto.PedidoDto;
 import br.com.restaurante.ifood.controller.dto.PratoDto;
 import br.com.restaurante.ifood.exception.BadRequestException;
 import br.com.restaurante.ifood.model.Cliente;
+import br.com.restaurante.ifood.model.Endereco;
 import br.com.restaurante.ifood.model.Pedido;
 import br.com.restaurante.ifood.model.Prato;
 import br.com.restaurante.ifood.repository.ClienteRepository;
@@ -28,6 +30,9 @@ public class ClienteService {
 
     @Autowired
     private PedidoService pedidoService;
+
+    @Autowired
+    private EnderecoService enderecoService;
 
     public ClienteDto post(ClienteDto clienteDto) {
         if (clienteDto.getId() == null) {
@@ -62,10 +67,10 @@ public class ClienteService {
         Double valor = .0;
         for (int i = 0; i < pedidoDto.size(); i++) {
             for (int j = 0; j < pedidoDto.get(i).getPratos().size(); j++) {
-                PratoDto pratoDto = pratoService.getBy(pedidoDto.get(i).getPratos().get(i).getId());
+                PratoDto pratoDto = pratoService.getBy(pedidoDto.get(i).getPratos().get(j).getId());
                 valor += pratoDto.getPreco();
-                pedidoDto.get(i).setValorTotal(valor);
             }
+            pedidoDto.get(i).setValorTotal(valor);
         }
 
         ArrayList<Prato> listPrato = new ArrayList<>();
@@ -81,8 +86,16 @@ public class ClienteService {
                         .cliente(new Cliente(clienteDto))
                         .prazoEntrega(LocalDate.now())
                         .pratos(listPrato)
-                        .valorTotal(pedidoDto.get(0).getValorTotal())
+                        .valorTotal(valor)
 //                        .enderecoEntrega(clienteDto.getEndereco().get(0))
                         .build());
     }
+
+    public EnderecoDto postEndereco(Long clienteId, List<EnderecoDto> enderecoDto) {
+        ClienteDto clienteDto = getBy(clienteId);
+
+        enderecoDto.get(0).setCliente(new Cliente(clienteDto));
+        return enderecoService.post(enderecoDto.get(0));
+    }
+
 }

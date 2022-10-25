@@ -2,6 +2,7 @@ package br.com.restaurante.ifood.model;
 
 import br.com.restaurante.ifood.controller.dto.RestauranteDto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

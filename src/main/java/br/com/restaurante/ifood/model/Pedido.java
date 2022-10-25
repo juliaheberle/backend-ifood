@@ -1,7 +1,9 @@
 package br.com.restaurante.ifood.model;
 
 import br.com.restaurante.ifood.controller.dto.PedidoDto;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,7 +26,7 @@ public class Pedido {
     @JoinColumn(name = "cliente_id")
     @JsonIgnoreProperties("pedidos")
     private Cliente cliente;
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.MERGE)
     @JoinColumn(name = "pedido_id")
     @JsonIgnoreProperties("pedido")
     private List<Prato> pratos;

@@ -3,8 +3,8 @@ package br.com.restaurante.ifood.model;
 import br.com.restaurante.ifood.controller.dto.ClienteDto;
 import br.com.restaurante.ifood.controller.dto.EnderecoDto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -13,8 +13,11 @@ import java.util.List;
 
 @Entity
 @Data
+@Getter
+@Setter
 @Table(name = "cliente")
 @NoArgsConstructor
+@AllArgsConstructor
 public class Cliente {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)

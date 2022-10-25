@@ -5,6 +5,7 @@ import br.com.restaurante.ifood.model.Endereco;
 import br.com.restaurante.ifood.model.Restaurante;
 import jdk.dynalink.linker.LinkerServices;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class EnderecoDto {

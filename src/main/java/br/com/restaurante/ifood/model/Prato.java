@@ -1,6 +1,7 @@
 package br.com.restaurante.ifood.model;
 
 import br.com.restaurante.ifood.controller.dto.PratoDto;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;

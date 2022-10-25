@@ -1,6 +1,8 @@
 package br.com.restaurante.ifood.model;
 
+import br.com.restaurante.ifood.controller.dto.ClienteDto;
 import br.com.restaurante.ifood.controller.dto.EnderecoDto;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +27,6 @@ public class Endereco {
     private String rua;
     private Long numero;
     private Long cep;
-
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "cliente_id")
     @JsonIgnoreProperties("endereco")
@@ -44,6 +45,8 @@ public class Endereco {
         this.rua = enderecoDto.getRua();
         this.numero = enderecoDto.getNumero();
         this.cep = enderecoDto.getCep();
+        this.cliente = enderecoDto.getCliente();
+        this.restaurante = enderecoDto.getRestaurante();
     }
 
     public static List<Endereco> converter(List<EnderecoDto> endereco) {

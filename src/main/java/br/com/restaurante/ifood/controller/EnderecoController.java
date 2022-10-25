@@ -18,15 +18,6 @@ public class EnderecoController {
     @Autowired
     private EnderecoService enderecoService;
 
-    @PostMapping("/{id}/restaurante")
-    private ResponseEntity<RestauranteDto> postEnderecoRestaurante(@RequestBody List<EnderecoDto> enderecoDto, @PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(enderecoService.saveRestaurante(enderecoDto, id));
-    }
-
-    @PostMapping("{id}/cliente")
-    private ResponseEntity<ClienteDto> postEnderecoCliente(@RequestBody List<EnderecoDto> enderecoDto, @PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(enderecoService.saveCliente(enderecoDto, id));
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<EnderecoDto> get(@PathVariable Long id){

@@ -3,8 +3,7 @@ package br.com.restaurante.ifood.controller.dto;
 import br.com.restaurante.ifood.model.Cliente;
 import br.com.restaurante.ifood.model.Endereco;
 import br.com.restaurante.ifood.model.Pedido;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.OneToMany;
 import java.time.LocalDate;
@@ -13,6 +12,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
+@Getter
+@Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class ClienteDto {
 

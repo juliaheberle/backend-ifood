@@ -1,9 +1,11 @@
 package br.com.restaurante.ifood.service;
 
+import br.com.restaurante.ifood.controller.dto.EnderecoDto;
 import br.com.restaurante.ifood.controller.dto.PratoDto;
 import br.com.restaurante.ifood.controller.dto.RestauranteDto;
 import br.com.restaurante.ifood.exception.BadRequestException;
 import br.com.restaurante.ifood.exception.NotFoundException;
+import br.com.restaurante.ifood.model.Endereco;
 import br.com.restaurante.ifood.model.Prato;
 import br.com.restaurante.ifood.model.Restaurante;
 import br.com.restaurante.ifood.repository.RestauranteRepository;
@@ -25,11 +27,10 @@ public class RestauranteService {
     @Autowired
     private PratoService pratoService;
 
+    @Autowired
+    private EnderecoService enderecoService;
+
     public RestauranteDto save(RestauranteDto restauranteDto) {
-//        List<Prato> pratos = restauranteDto.getPratos()
-//                .stream()
-//                .map(Prato::new)
-//                .collect(Collectors.toList());
         Restaurante restaurante = restauranteRepository.save(new Restaurante(restauranteDto));
         return new RestauranteDto(restaurante);
     }
@@ -85,5 +86,14 @@ public class RestauranteService {
 
         return pratoService.post(pratoDto);
 
+    }
+
+    public EnderecoDto postEndereco(Long restauranteId, EnderecoDto enderecoDto) {
+        RestauranteDto restauranteDto = findById(restauranteId);
+        ArrayList<EnderecoDto> endereco = new ArrayList<>();
+        endereco.add(enderecoDto);
+        enderecoDto.setRestaurante(new Restaurante(restauranteDto));
+
+        return enderecoService.post(enderecoDto);
     }
 }

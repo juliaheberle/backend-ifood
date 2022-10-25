@@ -1,6 +1,7 @@
 package br.com.restaurante.ifood.controller;
 
 import br.com.restaurante.ifood.controller.dto.ClienteDto;
+import br.com.restaurante.ifood.controller.dto.EnderecoDto;
 import br.com.restaurante.ifood.controller.dto.PedidoDto;
 import br.com.restaurante.ifood.controller.dto.RestauranteDto;
 import br.com.restaurante.ifood.service.ClienteService;
@@ -26,6 +27,11 @@ public class ClienteController {
     @PostMapping("/{clienteId}/pedidos")
     private ResponseEntity<PedidoDto> casdastrarPedido(@PathVariable Long clienteId, @RequestBody List<PedidoDto> pedidoDto){
         return ResponseEntity.ok(clienteService.postPedido(clienteId, pedidoDto));
+    }
+
+    @PostMapping("/{clienteId}/endereco")
+    private ResponseEntity<EnderecoDto> casdastrarEndereco(@PathVariable Long clienteId, @RequestBody List<EnderecoDto> enderecoDto){
+        return ResponseEntity.ok(clienteService.postEndereco(clienteId, enderecoDto));
     }
 
     @GetMapping("/{id}")
